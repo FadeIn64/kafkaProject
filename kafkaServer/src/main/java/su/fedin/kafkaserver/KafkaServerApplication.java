@@ -26,7 +26,6 @@ public class KafkaServerApplication {
         user = repo.save(user);
         orderRepo.save(new Order(0, "Sdsd", user, 50));
         var order = orderRepo.findById(1).get();
-        System.out.println(order);
 
     }
 
