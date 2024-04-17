@@ -34,7 +34,7 @@ public class ExternalServerRequester {
     }
 
     public ResponseEntity<String> createOrder(Order order){
-        var future =  orderTemplate.send(orderTopic, order.getUser_id(), order);
+        orderTemplate.send(orderTopic, order.getUser_id(), order);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
