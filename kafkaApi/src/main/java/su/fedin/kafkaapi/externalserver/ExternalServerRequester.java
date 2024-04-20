@@ -30,7 +30,7 @@ public class ExternalServerRequester {
 
     public ResponseEntity<Order> getOrderById(int id){
         return externalServerTemplate
-                .getForEntity(String.format("%s/order/%d",externalServerProperties.uri(), id), Order.class);
+                .getForEntity(String.format("%s/orders/%d",externalServerProperties.uri(), id), Order.class);
     }
 
     public ResponseEntity<String> createOrder(Order order){
