@@ -1,8 +1,6 @@
 package su.fedin.kafkaserver.services;
 
 import su.fedin.kafkaserver.dtos.OrderDTO;
-import su.fedin.kafkaserver.entities.Order;
-import su.fedin.kafkaserver.entities.User;
 
 import java.util.List;
 
