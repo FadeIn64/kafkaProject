@@ -2,6 +2,7 @@ package su.fedin.kafkaserver.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,5 +26,13 @@ public class UserController {
         if (user.getId() == 0)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/users/{id}/orders")
+    ResponseEntity getUserOrders(@PathVariable int id){
+        var list = userService.findAllByUser(id);
+        if (list.size() == 0)
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }
