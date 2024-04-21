@@ -16,7 +16,7 @@ public class KafkaServerApplication {
 
         UserRepo repo = context.getBean(UserRepo.class);
         OrderRepo orderRepo = context.getBean(OrderRepo.class);
-        var users = repo.myFindTop10ByAgrigateCost();
+        var users = repo.myFindTop10ByAggregateCost();
         System.out.println(users);
 
     }

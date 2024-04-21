@@ -9,6 +9,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import su.fedin.kafkaapi.dtos.Order;
+import su.fedin.kafkaapi.dtos.User;
 
 @Component
 public class ExternalServerRequester {
@@ -36,6 +37,10 @@ public class ExternalServerRequester {
     public ResponseEntity<String> createOrder(Order order){
         orderTemplate.send(orderTopic, order.getUser_id(), order);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<User> getUser(int id){
+        return externalServerTemplate.getForEntity(String.format("%s/users/%d",externalServerProperties.uri(), id), User.class);
     }
 
 

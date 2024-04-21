@@ -17,6 +17,6 @@ public interface UserRepo extends JpaRepository<User, Integer> {
     order by sum desc
     limit 10
 """, nativeQuery = true)
-    List<User> myFindTop10ByAgrigateCost();
+    List<User> myFindTop10ByAggregateCost();
 
 }
