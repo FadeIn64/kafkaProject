@@ -6,7 +6,7 @@ import su.fedin.kafkaserver.dtos.OrderDTO;
 import su.fedin.kafkaserver.entities.Order;
 import su.fedin.kafkaserver.repos.OrderRepo;
 import su.fedin.kafkaserver.services.OrderService;
-import su.fedin.kafkaserver.mappers.OrderMapper;
+import su.fedin.kafkaserver.utils.mappers.OrderMapper;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -23,15 +23,15 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDTO create(OrderDTO orderDTO) {
         orderDTO.setId(0);
-        Order order = orderMapper.wrap(orderDTO);
+        Order order = orderMapper.mapToEntity(orderDTO);
         order = orderRepo.save(order);
         System.out.println(order);
-        return orderMapper.wrap(order);
+        return orderMapper.mapToDTO(order);
     }
 
     @Override
     public OrderDTO getOrder(OrderDTO orderDTO) {
         Order order = orderRepo.findById(orderDTO.getId()).orElse(new Order());
-        return orderMapper.wrap(order);
+        return orderMapper.mapToDTO(order);
     }
 }

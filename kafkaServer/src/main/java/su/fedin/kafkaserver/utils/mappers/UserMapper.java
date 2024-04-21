@@ -1,4 +1,4 @@
-package su.fedin.kafkaserver.mappers;
+package su.fedin.kafkaserver.utils.mappers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ public class UserMapper {
         this.userRepo = userRepo;
     }
 
-    public UserDTO wrap(User user){
+    public UserDTO mapToDTO(User user){
         UserDTO userDTO = new UserDTO();
 
         userDTO.setName(user.getName());
@@ -24,7 +24,7 @@ public class UserMapper {
         return userDTO;
     }
 
-    public User wrap(UserDTO user){
+    public User mapToEntity(UserDTO user){
         return userRepo.findById(user.getId()).orElse(new User(0, user.getName()));
     }
 }

@@ -1,4 +1,4 @@
-package su.fedin.kafkaserver.mappers;
+package su.fedin.kafkaserver.utils.mappers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,11 +18,11 @@ public class OrderMapper {
         this.userRepo = userRepo;
     }
 
-    public OrderDTO wrap(Order order){
+    public OrderDTO mapToDTO(Order order){
         return new OrderDTO(order.getId(), order.getUser().getId(), order.getGoods(), order.getCost());
     }
 
-    public Order wrap(OrderDTO orderDTO){
+    public Order mapToEntity(OrderDTO orderDTO){
         Order order = orderRepo.findById(orderDTO.getId())
                 .orElse(new Order(0, orderDTO.getGoods(), null, orderDTO.getCost()));
         order.setUser(userRepo.findById(orderDTO.getUser_id()).get());

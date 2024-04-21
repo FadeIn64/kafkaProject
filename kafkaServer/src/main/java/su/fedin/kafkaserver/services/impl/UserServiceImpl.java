@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import su.fedin.kafkaserver.dtos.UserDTO;
 import su.fedin.kafkaserver.entities.User;
-import su.fedin.kafkaserver.mappers.UserMapper;
+import su.fedin.kafkaserver.utils.mappers.UserMapper;
 import su.fedin.kafkaserver.repos.UserRepo;
 import su.fedin.kafkaserver.services.UserService;
 
@@ -26,6 +26,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUsers(int id) {
         var user = userRepo.findById(id);
-        return userMapper.wrap(user.orElse(new User()));
+        return userMapper.mapToDTO(user.orElse(new User()));
     }
 }
