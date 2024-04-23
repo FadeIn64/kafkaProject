@@ -1,6 +1,7 @@
 package su.fedin.kafkaapi.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,15 @@ public class UserController {
             return requester.getUser(id);
         }
         catch (HttpClientErrorException e){
+            return new ResponseEntity<>(HttpStatusCode.valueOf(e.getStatusCode().value()));
+        }
+    }
+
+    @GetMapping("/users/top10bycost")
+    ResponseEntity getTopUsersByCost(){
+        try {
+            return requester.getTopUsersByCost();
+        }catch (HttpClientErrorException e){
             return new ResponseEntity<>(HttpStatusCode.valueOf(e.getStatusCode().value()));
         }
     }

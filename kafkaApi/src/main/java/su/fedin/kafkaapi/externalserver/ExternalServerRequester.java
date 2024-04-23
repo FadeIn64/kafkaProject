@@ -11,6 +11,8 @@ import org.springframework.web.client.RestTemplate;
 import su.fedin.kafkaapi.dtos.Order;
 import su.fedin.kafkaapi.dtos.User;
 
+import java.util.List;
+
 @Component
 public class ExternalServerRequester {
     private ExternalServerProperties externalServerProperties;
@@ -41,6 +43,10 @@ public class ExternalServerRequester {
 
     public ResponseEntity<User> getUser(int id){
         return externalServerTemplate.getForEntity(String.format("%s/users/%d",externalServerProperties.uri(), id), User.class);
+    }
+
+    public ResponseEntity<List> getTopUsersByCost(){
+        return externalServerTemplate.getForEntity(String.format("%s/users/top10bycost",externalServerProperties.uri()), List.class);
     }
 
 

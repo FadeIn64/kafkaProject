@@ -11,4 +11,6 @@ public interface UserService {
     UserDTO getUsers(int id);
     List<OrderDTO> findAllByUser(int userID);
 
+    List<UserDTO> getTopUsersBySumCost();
+
 }

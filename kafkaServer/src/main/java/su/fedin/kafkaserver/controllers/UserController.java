@@ -1,6 +1,7 @@
 package su.fedin.kafkaserver.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,13 @@ public class UserController {
         var list = userService.findAllByUser(id);
         if (list.size() == 0)
             return new ResponseEntity(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+    @GetMapping("/users/top10bycost")
+    ResponseEntity getTopUsersByCost(){
+        var list = userService.getTopUsersBySumCost();
+        if (list.size() == 0)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }

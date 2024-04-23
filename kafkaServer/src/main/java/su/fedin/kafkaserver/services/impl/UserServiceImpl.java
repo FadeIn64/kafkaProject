@@ -41,4 +41,11 @@ public class UserServiceImpl implements UserService {
     public List<OrderDTO> findAllByUser(int userID) {
         return orderService.findAllByUser(userID);
     }
+
+    @Override
+    public List<UserDTO> getTopUsersBySumCost() {
+        var list = userRepo.myFindTop10ByAggregateCost();
+        var res = list.stream().map(userMapper::mapToDTO).toList();
+        return res;
+    }
 }
