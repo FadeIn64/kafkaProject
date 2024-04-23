@@ -11,6 +11,7 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import su.fedin.kafkaserver.dtos.OrderDTO;
+import su.fedin.kafkaserver.dtos.UserDTO;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +40,26 @@ public class KafkaConfiguration {
     public ConcurrentKafkaListenerContainerFactory<Integer, OrderDTO> orderKafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<Integer, OrderDTO> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(orderConsumerFactory());
+        return factory;
+    }
+
+    private ConsumerFactory<Integer, UserDTO> userConsumerFactory() {
+        Map<String, Object> props = new HashMap<>();
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        return new DefaultKafkaConsumerFactory<>(props, new IntegerDeserializer(), userJsonDeserializer());
+    }
+
+    private JsonDeserializer<UserDTO> userJsonDeserializer(){
+        JsonDeserializer<UserDTO> deserializer = new JsonDeserializer<>(UserDTO.class);
+        deserializer.addTrustedPackages("*");
+        deserializer.ignoreTypeHeaders();
+        return deserializer;
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<Integer, UserDTO> userKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<Integer, UserDTO> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(userConsumerFactory());
         return factory;
     }
 }

@@ -18,16 +18,22 @@ public class ExternalServerRequester {
     private ExternalServerProperties externalServerProperties;
     private RestTemplate externalServerTemplate;
     private KafkaTemplate<Integer, Order> orderTemplate;
+    private KafkaTemplate<Integer, User> userTemplate;
     @Value("${kafka.topic.order}")
     private String orderTopic;
+    @Value("${kafka.topic.user}")
+    private String userTopic;
+
 
     @Autowired
     public ExternalServerRequester(ExternalServerProperties externalServerProperties,
                                    @Qualifier("ExternalServerTemplate") RestTemplate restTemplate,
-                                   @Qualifier("OrderTemplate") KafkaTemplate<Integer, Order> orderTemplate) {
+                                   @Qualifier("OrderTemplate") KafkaTemplate<Integer, Order> orderTemplate,
+                                   @Qualifier("UserTemplate") KafkaTemplate<Integer, User> userTemplate) {
         this.externalServerProperties = externalServerProperties;
         this.externalServerTemplate = restTemplate;
         this.orderTemplate = orderTemplate;
+        this.userTemplate = userTemplate;
 
     }
 
@@ -49,5 +55,9 @@ public class ExternalServerRequester {
         return externalServerTemplate.getForEntity(String.format("%s/users/top10bycost",externalServerProperties.uri()), List.class);
     }
 
+    public ResponseEntity<String> createUser(User user){
+        userTemplate.send(userTopic, user.getId(), user);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 
 }

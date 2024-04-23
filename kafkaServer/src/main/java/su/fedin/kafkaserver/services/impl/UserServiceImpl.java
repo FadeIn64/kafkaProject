@@ -48,4 +48,12 @@ public class UserServiceImpl implements UserService {
         var res = list.stream().map(userMapper::mapToDTO).toList();
         return res;
     }
+
+    @Override
+    public UserDTO createUser(UserDTO userDTO) {
+        userDTO.setId(0);
+        User user = userMapper.mapToEntity(userDTO);
+        user = userRepo.save(user);
+        return userMapper.mapToDTO(user);
+    }
 }

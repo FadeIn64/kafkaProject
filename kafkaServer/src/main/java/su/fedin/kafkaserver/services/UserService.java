@@ -13,4 +13,6 @@ public interface UserService {
 
     List<UserDTO> getTopUsersBySumCost();
 
+    UserDTO createUser(UserDTO userDTO);
+
 }

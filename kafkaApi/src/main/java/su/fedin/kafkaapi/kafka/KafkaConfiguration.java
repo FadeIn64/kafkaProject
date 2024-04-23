@@ -10,6 +10,7 @@ import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.*;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import su.fedin.kafkaapi.dtos.Order;
+import su.fedin.kafkaapi.dtos.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +23,9 @@ public class KafkaConfiguration {
 
     @Value("${kafka.topic.order}")
     private String orderTopic;
+
+    @Value("${kafka.topic.user}")
+    private String userTopic;
 
 
     public ProducerFactory<Integer, Order> orderProducerFactory() {
@@ -37,9 +41,29 @@ public class KafkaConfiguration {
         return new KafkaTemplate<>(orderProducerFactory());
     }
 
+    public ProducerFactory<Integer, User> userProducerFactory() {
+        Map<String, Object> configProps = new HashMap<>();
+        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, IntegerSerializer.class);
+        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        return new DefaultKafkaProducerFactory<>(configProps);
+    }
+
+    @Bean("UserTemplate")
+    public KafkaTemplate<Integer, User> userKafkaTemplate() {
+        return new KafkaTemplate<>(userProducerFactory());
+    }
+
     @Bean
     public NewTopic orders() {
         return TopicBuilder.name(orderTopic)
+                .partitions(1).
+                build();
+    }
+
+    @Bean
+    public NewTopic users() {
+        return TopicBuilder.name(userTopic)
                 .partitions(1).
                 build();
     }
