@@ -1,10 +1,12 @@
-package su.fedin.kafkaapi.externalserver;
+package su.fedin.kafkaapi.config;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-@Component
-public class ExternalServerProperties {
+@Configuration
+public class ExternalServerConfiguration {
 
     @Value("${backend.server.domain}")
     String domain;
@@ -13,6 +15,8 @@ public class ExternalServerProperties {
     @Value("${backend.server.protocol}")
     String protocol;
 
+    @Bean
+    @Qualifier("uri")
     public String uri(){
         return String.format("%s://%s:%s", protocol, domain, port);
     }

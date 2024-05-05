@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import su.fedin.kafkaapi.config.ExternalServerConfiguration;
 import su.fedin.kafkaapi.dtos.Order;
 import su.fedin.kafkaapi.dtos.User;
 
@@ -15,7 +16,6 @@ import java.util.List;
 
 @Component
 public class ExternalServerRequester {
-    private ExternalServerProperties externalServerProperties;
     private RestTemplate externalServerTemplate;
     private KafkaTemplate<Integer, Order> orderTemplate;
     private KafkaTemplate<Integer, User> userTemplate;
@@ -23,23 +23,24 @@ public class ExternalServerRequester {
     private String orderTopic;
     @Value("${kafka.topic.user}")
     private String userTopic;
+    private String uri;
 
 
     @Autowired
-    public ExternalServerRequester(ExternalServerProperties externalServerProperties,
-                                   @Qualifier("ExternalServerTemplate") RestTemplate restTemplate,
+    public ExternalServerRequester(@Qualifier("ExternalServerTemplate") RestTemplate restTemplate,
                                    @Qualifier("OrderTemplate") KafkaTemplate<Integer, Order> orderTemplate,
-                                   @Qualifier("UserTemplate") KafkaTemplate<Integer, User> userTemplate) {
-        this.externalServerProperties = externalServerProperties;
+                                   @Qualifier("UserTemplate") KafkaTemplate<Integer, User> userTemplate,
+                                   @Qualifier("uri") String uri) {
         this.externalServerTemplate = restTemplate;
         this.orderTemplate = orderTemplate;
         this.userTemplate = userTemplate;
+        this.uri = uri;
 
     }
 
     public ResponseEntity<Order> getOrderById(int id){
         return externalServerTemplate
-                .getForEntity(String.format("%s/orders/%d",externalServerProperties.uri(), id), Order.class);
+                .getForEntity(String.format("%s/orders/%d",this.uri, id), Order.class);
     }
 
     public ResponseEntity<String> createOrder(Order order){
@@ -48,11 +49,11 @@ public class ExternalServerRequester {
     }
 
     public ResponseEntity<User> getUser(int id){
-        return externalServerTemplate.getForEntity(String.format("%s/users/%d",externalServerProperties.uri(), id), User.class);
+        return externalServerTemplate.getForEntity(String.format("%s/users/%d",this.uri, id), User.class);
     }
 
     public ResponseEntity<List> getTopUsersByCost(){
-        return externalServerTemplate.getForEntity(String.format("%s/users/top10bycost",externalServerProperties.uri()), List.class);
+        return externalServerTemplate.getForEntity(String.format("%s/users/top10bycost",this.uri), List.class);
     }
 
     public ResponseEntity<String> createUser(User user){

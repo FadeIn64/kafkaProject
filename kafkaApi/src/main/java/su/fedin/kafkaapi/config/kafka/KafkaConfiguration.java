@@ -1,4 +1,4 @@
-package su.fedin.kafkaapi.kafka;
+package su.fedin.kafkaapi.config.kafka;
 
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
