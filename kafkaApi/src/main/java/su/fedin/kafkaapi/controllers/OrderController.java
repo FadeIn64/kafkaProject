@@ -5,21 +5,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import su.fedin.kafkaapi.dtos.Order;
-import su.fedin.kafkaapi.externalserver.ExternalServerRequester;
+import su.fedin.kafkaapi.services.OrderService;
 
 @RestController
 public class OrderController {
 
-    ExternalServerRequester requester;
+    OrderService service;
 
-    public OrderController(ExternalServerRequester requester) {
-        this.requester = requester;
+    public OrderController(OrderService service) {
+        this.service = service;
     }
 
     @GetMapping("/order/{id}")
     ResponseEntity<Order> getOrder(@PathVariable int id){
         try {
-            return requester.getOrderById(id);
+            return service.getOrderById(id);
         }
         catch (HttpClientErrorException e){
             return new ResponseEntity<>(HttpStatusCode.valueOf(e.getStatusCode().value()));
@@ -28,7 +28,7 @@ public class OrderController {
 
     @PostMapping("/order")
     ResponseEntity<String> createOrder(@RequestBody Order order){
-        return requester.createOrder(order);
+        return service.createOrder(order);
     }
 
 }

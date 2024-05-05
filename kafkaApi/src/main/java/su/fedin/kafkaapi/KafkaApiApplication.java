@@ -12,13 +12,7 @@ public class KafkaApiApplication {
 
     public static void main(String[] args) {
 
-        UUID uuid = UUID.randomUUID();
-        System.out.println(uuid);
-
-        //var context =  SpringApplication.run(KafkaApiApplication.class, args);
-
-        //var template = context.getBean("OrderTemplate", KafkaTemplate.class);
-        //template.send("orders", 1, new Order(1, 1, "sadasdas", 50));
+        var context =  SpringApplication.run(KafkaApiApplication.class, args);
     }
 
 }

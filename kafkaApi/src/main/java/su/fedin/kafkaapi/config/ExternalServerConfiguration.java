@@ -14,10 +14,20 @@ public class ExternalServerConfiguration {
     String port;
     @Value("${backend.server.protocol}")
     String protocol;
+    @Value("${kafka.topic.order}")
+    private String orderTopic;
+    @Value("${kafka.topic.user}")
+    private String userTopic;
 
     @Bean
     @Qualifier("uri")
     public String uri(){
         return String.format("%s://%s:%s", protocol, domain, port);
     }
+
+    @Bean
+    public String orderTopic(){return this.orderTopic;}
+
+    @Bean
+    public String userTopic(){return this.userTopic;}
 }

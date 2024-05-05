@@ -1,28 +1,26 @@
 package su.fedin.kafkaapi.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
-import su.fedin.kafkaapi.dtos.Order;
 import su.fedin.kafkaapi.dtos.User;
-import su.fedin.kafkaapi.externalserver.ExternalServerRequester;
+import su.fedin.kafkaapi.services.UserService;
 
 @RestController
 public class UserController {
-    ExternalServerRequester requester;
+    UserService service;
 
     @Autowired
-    public UserController(ExternalServerRequester requester) {
-        this.requester = requester;
+    public UserController(UserService service) {
+        this.service = service;
     }
 
     @GetMapping("/users/{id}")
     ResponseEntity getUser(@PathVariable int id){
         try {
-            return requester.getUser(id);
+            return service.getUser(id);
         }
         catch (HttpClientErrorException e){
             return new ResponseEntity<>(HttpStatusCode.valueOf(e.getStatusCode().value()));
@@ -32,7 +30,7 @@ public class UserController {
     @GetMapping("/users/top10bycost")
     ResponseEntity getTopUsersByCost(){
         try {
-            return requester.getTopUsersByCost();
+            return service.getTopUsersByCost();
         }catch (HttpClientErrorException e){
             return new ResponseEntity<>(HttpStatusCode.valueOf(e.getStatusCode().value()));
         }
@@ -41,6 +39,6 @@ public class UserController {
     @PostMapping("/users")
 
     ResponseEntity<String> createOrder(@RequestBody User user){
-        return requester.createUser(user);
+        return service.createUser(user);
     }
 }
